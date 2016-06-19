@@ -1,6 +1,7 @@
 use std::thread::{self, JoinHandle};
 use std::io::{Read, Write, Cursor};
 use std::sync::mpsc::{self, Sender, Receiver};
+use std::net::SocketAddr;
 use byteorder::{ReadBytesExt, WriteBytesExt, LittleEndian};
 use flate2::read::GzDecoder;
 use mio::{Handler, EventLoop, Token, EventSet, PollOpt};
@@ -188,7 +189,7 @@ pub struct SteamConnection {
 
 impl SteamConnection {
     /// Connects to a steam server. Aquires the server it should connect to automatically.
-    pub fn connect() -> Self {
+    pub fn connect(server_addr: SocketAddr) -> Self {
         // Set up the channels to send messages through
         let (incoming_sender, incoming_receiver) = mpsc::channel();
 
@@ -200,7 +201,7 @@ impl SteamConnection {
         let handle = thread::Builder::new()
             .name("boiler-runtime".into())
             .spawn(move || {
-                Self::client_runtime(event_loop, incoming_sender);
+                Self::client_runtime(server_addr, event_loop, incoming_sender);
             })
             .unwrap();
 
@@ -250,11 +251,9 @@ impl SteamConnection {
         self.runtime.join().unwrap();
     }
 
-    fn client_runtime(mut event_loop: EventLoop<SteamConnectionRuntime>, msg_sender: Sender<Message>) {
+    fn client_runtime(server_addr: SocketAddr, mut event_loop: EventLoop<SteamConnectionRuntime>, msg_sender: Sender<Message>) {
         // Get a server to connect to
-        // TODO: Take one address from a list of many
         // TODO: Actually fetch a server using the API
-        let server_addr = "72.165.61.185:27017".parse().unwrap();
         info!("Connecting to {}", server_addr);
 
         // Start the connection to the server

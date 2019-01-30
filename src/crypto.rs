@@ -26,7 +26,8 @@ pub fn encrypt_key(key: &[u8]) -> Vec<u8> {
     let steam_pkey = PKey::public_key_from_pem(steam_pkey_data as &[u8]).unwrap().rsa().unwrap();
 
     // Actually perform the encryption
-    let encrypted_key = steam_pkey.public_encrypt(key);
+    let mut encrypted_key;
+    steam_pkey.public_encrypt(key, encrypted_key, openssl::rsa::Padding::NONE);
 
     // Return the new key
     encrypted_key

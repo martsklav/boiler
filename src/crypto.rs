@@ -30,7 +30,7 @@ pub fn encrypt_key(key: &[u8]) -> Vec<u8> {
     steam_pkey.public_encrypt(key, encrypted_key, openssl::rsa::Padding::NONE);
 
     // Return the new key
-    encrypted_key
+    encrypted_key.to_vec()
 }
 
 fn crypt_iv(iv: &[u8], key: &[u8], mode: Mode) -> Vec<u8> {

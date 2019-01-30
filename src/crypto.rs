@@ -33,8 +33,8 @@ pub fn encrypt_key(key: &[u8]) -> Vec<u8> {
 }
 
 fn crypt_iv(iv: &[u8], key: &[u8], mode: Mode) -> Vec<u8> {
-    let crypter = Crypter::new(Cipher::aes_256_ecb(), mode, key, "".as_bytes());
-    crypter.init(mode, key, "".as_bytes());
+    let crypter = Crypter::new(Cipher::aes_256_ecb(), mode, key);
+
     crypter.pad(false);
 
     // Actually perform the encryption
@@ -45,9 +45,9 @@ fn crypt_iv(iv: &[u8], key: &[u8], mode: Mode) -> Vec<u8> {
 }
 
 fn crypt_data(data: &[u8], key: &[u8], iv: &[u8], mode: Mode) -> Vec<u8> {
-    let crypter = Crypter::new(Type::AES_256_CBC);
-    crypter.init(mode, key, iv);
+    let crypter = Crypter::new(Cipher::aes_256_cbc(), mode, key);
 
+    
     // Actually perform the encryption
     let mut buffer = crypter.update(&data);
     buffer.extend_from_slice(&crypter.finalize());

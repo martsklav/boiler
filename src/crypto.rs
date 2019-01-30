@@ -23,7 +23,7 @@ pub fn generate_key() -> Vec<u8> {
 pub fn encrypt_key(key: &[u8]) -> Vec<u8> {
     // Load in the key
     let steam_pkey_data = include_bytes!("../assets/steam.pub");
-    let steam_pkey = PKey::public_key_from_pem(steam_pkey_data as &[u8]).unwrap();
+    let steam_pkey = PKey::public_key_from_pem(steam_pkey_data as &[u8]).unwrap().rsa().unwrap();
 
     // Actually perform the encryption
     let encrypted_key = steam_pkey.public_encrypt(key);

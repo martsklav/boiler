@@ -1,6 +1,6 @@
 use std::io::Cursor;
-use openssl::crypto::pkey::PKey;
-use openssl::crypto::symm::{Crypter, Mode, Type};
+use openssl::pkey::PKey;
+use openssl::symm::{Crypter, Mode, Type};
 use rand::Rng;
 use rand::os::OsRng;
 

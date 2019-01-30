@@ -1,6 +1,6 @@
 use std::io::Cursor;
 use openssl::pkey::PKey;
-use openssl::symm::{Crypter, Mode, Type};
+use openssl::symm::{Crypter, Cipher, Mode};
 use rand::Rng;
 use rand::os::OsRng;
 
@@ -31,9 +31,9 @@ pub fn encrypt_key(key: &[u8]) -> Vec<u8> {
     // Return the new key
     encrypted_key
 }
-
+Type::AES_256_ECB
 fn crypt_iv(iv: &[u8], key: &[u8], mode: Mode) -> Vec<u8> {
-    let crypter = Crypter::new(Type::AES_256_ECB);
+    let crypter = Crypter::new(aes_256_ecb(), mode, key, "".as_bytes());
     crypter.init(mode, key, "".as_bytes());
     crypter.pad(false);
 

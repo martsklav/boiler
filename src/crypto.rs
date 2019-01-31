@@ -35,14 +35,16 @@ pub fn encrypt_key(key: &[u8]) -> Vec<u8> {
 
 fn crypt_iv(iv: &[u8], key: &[u8], mode: Mode) -> Vec<u8> {
     let mut crypter = Crypter::new(Cipher::aes_256_ecb(), mode, key, enum_primitive::Option::Some("".as_bytes())).unwrap();
+    let len_iv = iv.len();
+    let block = Cipher::aes_256_ecb().block_size();
 
     // Actually perform the encryption
-    let mut buffer;
-    crypter.update(&iv, &buffer);
+    let mut buffer = vec![0; len_iv + block];
+    crypter.update(&iv, &mut buffer);
     let mut bufvec = buffer.to_vec();
-    let mut fin;
+    let mut fin = vec![0; len_iv + block];
     crypter.finalize(fin);
-    bufvec.extend_from_slice(&fin);
+    bufvec.extend_from_slice(&mut fin);
 
     bufvec
 }

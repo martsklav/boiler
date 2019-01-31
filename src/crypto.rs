@@ -22,11 +22,12 @@ pub fn generate_key() -> Vec<u8> {
 /// Encrypts a session key using steam's public key.
 pub fn encrypt_key(key: &[u8]) -> Vec<u8> {
     // Load in the key
+    let len_key = key.len();
     let steam_pkey_data = include_bytes!("../assets/steam.pub");
     let steam_pkey = PKey::public_key_from_pem(steam_pkey_data as &[u8]).unwrap().rsa().unwrap();
 
     // Actually perform the encryption
-    let mut encrypted_key;
+    let mut encrypted_key = vec![0; len_key];
     steam_pkey.public_encrypt(key, encrypted_key, openssl::rsa::Padding::NONE);
 
     // Return the new key

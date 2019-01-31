@@ -40,7 +40,9 @@ fn crypt_iv(iv: &[u8], key: &[u8], mode: Mode) -> Vec<u8> {
     let mut buffer;
     crypter.update(&iv, buffer);
     let bufvec = buffer.to_vec();
-    bufvec.extend_from_slice(&crypter.finalize());
+    let mut fin;
+    crypter.finalize(fin);
+    bufvec.extend_from_slice(&fin);
 
     bufvec
 }

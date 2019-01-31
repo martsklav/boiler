@@ -45,7 +45,7 @@ fn crypt_iv(iv: &[u8], key: &[u8], mode: Mode) -> Vec<u8> {
 }
 
 fn crypt_data(data: &[u8], key: &[u8], iv: &[u8], mode: Mode) -> Vec<u8> {
-    let crypter = Crypter::new(Cipher::aes_256_cbc(), mode, key, enum_primitive::Option::Some("".as_bytes()));
+    let crypter = Crypter::new(Cipher::aes_256_cbc(), mode, key, enum_primitive::Option::Some("".as_bytes())).unwrap();
 
     
     // Actually perform the encryption

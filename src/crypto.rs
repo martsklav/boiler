@@ -37,7 +37,7 @@ fn crypt_iv(iv: &[u8], key: &[u8], mode: Mode) -> Vec<u8> {
     let mut crypter = Crypter::new(Cipher::aes_256_ecb(), mode, key, enum_primitive::Option::Some("".as_bytes())).unwrap();
 
     // Actually perform the encryption
-    let mut buffer = vec![];
+    let mut buffer;
     crypter.update(&iv, &buffer);
     let mut bufvec = buffer.to_vec();
     let mut fin;

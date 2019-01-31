@@ -52,10 +52,10 @@ fn crypt_data(data: &[u8], key: &[u8], iv: &[u8], mode: Mode) -> Vec<u8> {
 
     
     // Actually perform the encryption
-    let mut buffer;
+    let mut buffer = vec![0; data.size() as usize];
     crypter.update(&data, buffer);
     let mut bufvec = buffer.to_vec();
-    let mut fin;
+    let mut fin = vec![0; data.size() as usize];
     crypter.finalize(fin);
     bufvec.extend_from_slice(&fin);
 

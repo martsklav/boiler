@@ -52,9 +52,12 @@ fn crypt_data(data: &[u8], key: &[u8], iv: &[u8], mode: Mode) -> Vec<u8> {
     // Actually perform the encryption
     let mut buffer;
     crypter.update(&data, buffer);
-    buffer.extend_from_slice(&crypter.finalize());
+    bufvec = buffer.to_vec();
+    let mut fin;
+    crypter.finalize(fin);
+    bufvec.extend_from_slice(&fin);
 
-    buffer.to_vec()
+    bufvec
 }
 
 pub fn symmetric_encrypt(data: &[u8], key: &[u8]) -> Vec<u8> {

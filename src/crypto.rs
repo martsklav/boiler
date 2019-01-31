@@ -48,11 +48,17 @@ fn crypt_iv(iv: &[u8], key: &[u8], mode: Mode) -> Vec<u8> {
 }
 
 fn crypt_data(data: &[u8], key: &[u8], iv: &[u8], mode: Mode) -> Vec<u8> {
-    let mut crypter = Crypter::new(Cipher::aes_256_cbc(), mode, key, enum_primitive::Option::Some("".as_bytes())).unwrap();
-
+    let len_data = data.iter().fold(0, |sum, x| sum + x.len());
+    let block = Cipher::aes_256_cbc().block_size();
+    let mut crypter = Crypter::new(
+        Cipher::aes_256_cbc(), 
+        mode, 
+        key, 
+        enum_primitive::Option::Some("".as_bytes())
+    ).unwrap();
     
     // Actually perform the encryption
-    let mut buffer = vec![0; data.size() as usize];
+    let mut buffer = vec![0; len_data + block];
     crypter.update(&data, buffer);
     let mut bufvec = buffer.to_vec();
     let mut fin = vec![0; data.size() as usize];

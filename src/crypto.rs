@@ -28,7 +28,7 @@ pub fn encrypt_key(key: &[u8]) -> Vec<u8> {
 
     // Actually perform the encryption
     let mut encrypted_key = vec![0; len_key];
-    steam_pkey.public_encrypt(key, encrypted_key, openssl::rsa::Padding::NONE);
+    steam_pkey.public_encrypt(key, &mut encrypted_key, openssl::rsa::Padding::NONE);
 
     // Return the new key
     encrypted_key.to_vec()

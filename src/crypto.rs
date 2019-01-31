@@ -48,7 +48,7 @@ fn crypt_iv(iv: &[u8], key: &[u8], mode: Mode) -> Vec<u8> {
 }
 
 fn crypt_data(data: &[u8], key: &[u8], iv: &[u8], mode: Mode) -> Vec<u8> {
-    let len_data = data.as_bytes().iter().fold(0, |sum, x| sum + x.len());
+    let len_data = data.len();
     let block = Cipher::aes_256_cbc().block_size();
     let mut crypter = Crypter::new(
         Cipher::aes_256_cbc(), 

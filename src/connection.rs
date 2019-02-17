@@ -260,12 +260,12 @@ impl SteamConnection {
         let stream = TcpStream::connect(&server_addr).unwrap();
         println!("now that that is done");
         let event_set = EventSet::readable();
-        println!("now that THAT that is done")
+        println!("now that THAT that is done");
         let token = Token(0);
-        println!("now that THAT THAT is done")
+        println!("now that THAT THAT is done");
 
         event_loop.register(&stream, token, event_set, PollOpt::edge()).unwrap();
-        println!("now that THAT THAT THAT is done")
+        println!("now that THAT THAT THAT is done");
 
         // Run the event loop
         let mut runtime = SteamConnectionRuntime {

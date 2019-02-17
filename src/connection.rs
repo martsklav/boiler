@@ -263,7 +263,6 @@ impl SteamConnection {
         println!("now that THAT that is done");
         let token = Token(0);
         println!("now that THAT THAT is done");
-
         event_loop.register(&stream, token, event_set, PollOpt::edge()).unwrap();
         println!("now that THAT THAT THAT is done");
 
@@ -276,6 +275,7 @@ impl SteamConnection {
             queued_messages: Vec::new(),
             encryption_key: None
         };
+
         event_loop.run(&mut runtime).unwrap();
     }
 
